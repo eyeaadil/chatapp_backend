@@ -1,9 +1,8 @@
-import jwt from "jsonwebtoken";
-import dotenv from"dotenv";
+/* eslint-disable no-undef */
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 dotenv.config();
-
 const generateTokenAndSetCookie = (userId, res) => {
-	// console.log(userId)
 	const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
 		expiresIn: "15d",
 	});

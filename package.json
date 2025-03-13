@@ -4,15 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "node ./server.js",
-    "build":"npm install && npm install --prefix frontend npm run build --prefix frontend"
+    "server": "nodemon ./server.js",
+    "build": "npm install && npm install --prefix frontend npm run build --prefix frontend"
   },
   "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-  
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

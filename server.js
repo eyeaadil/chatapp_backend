@@ -1,39 +1,42 @@
-// import path from "path";	
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 import authRoutes from "./routes/auth.routes.js";
 import messageRoutes from "./routes/message.Routes.js";
 import userRoutes from "./routes/user.routes.js";
 import connectDB from "./db/dbConnect.js";
-// import connectToMongoDB from "./db/connectToMongoDB.js";
 import { app, server } from "./socket/socket.js";
 
-const PORT = process.env.PORT || 5000;
-connectDB();
-// const __dirname = path.resolve();
-
 dotenv.config();
+connectDB();
+const PORT = 5000;
 
-app.use(express.json()); // to parse the incoming requests with JSON payloads (from req.body)
+// Middleware
+app.use(express.json()); // Parse JSON payloads
 app.use(cookieParser());
 
+// CORS Configuration
+app.use(
+  cors({
+    origin: "http://localhost:3001", // Exact frontend origin
+    credentials: true, // Allow cookies/auth headers
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Explicitly include OPTIONS
+    allowedHeaders: ["Content-Type", "Authorization"], // Match frontend headers
+  })
+);
+
+// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);
 
-app.get("/",(req,res)=>{
-	res.send("Server is running");
-})
+app.get("/", (req, res) => {
+  res.send("Server is running");
+});
 
-// app.use(express.static(path.join(__dirname, "/frontend/dist")));
-
-// app.get("*", (req, res) => {
-// 	res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
-// });
-
+// Start the server
 server.listen(PORT, () => {
-	
-	console.log(`Server Running on port ${PORT}`);
+  console.log(`Server Running on port ${PORT}`);
 });

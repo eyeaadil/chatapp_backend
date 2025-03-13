@@ -2,7 +2,7 @@
 import bcrypt from "bcryptjs";
 import User from "../models/userModel.js";
 import generateTokenAndSetCookie from "../utils/generateToken.js";
-
+// import {generateTokens, setAuthCookies} from "../utils/generateToken.js";
 export const signup = async (req, res) => {
 	try {
 		const { fullName, username, password, confirmPassword, gender } = req.body;
@@ -11,7 +11,7 @@ export const signup = async (req, res) => {
 			return res.status(400).json({ error: "Passwords don't match" });
 		}
 
-		const user = await User.findOne({ username }).maxTimeMS(20000);;
+		const user = await User.findOne({ username });
 
 		if (user) {
 			return res.status(400).json({ error: "Username already exists" });
@@ -36,7 +36,6 @@ export const signup = async (req, res) => {
 
 		if (newUser) {
 			// Generate JWT token here
-            // console.log(newUser._id);
 			generateTokenAndSetCookie(newUser._id, res);
 			await newUser.save();
 
